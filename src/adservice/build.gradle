@@ -5,6 +5,12 @@ plugins {
     id 'application'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 repositories {
     mavenCentral()
     mavenLocal()
@@ -20,8 +26,8 @@ def jacksonVersion = "2.12.1"
 def protocVersion = "3.12.3"
 
 tasks.withType(JavaCompile) {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 ext {
@@ -92,9 +98,9 @@ startScripts.enabled = false
 // This to cache dependencies during Docker image building. First build will take time.
 // Subsequent build will be incremental.
 task downloadRepos(type: Copy) {
-    from configurations.compile
+    from configurations.implementation
     into offlineCompile
-    from configurations.runtime
+    from configurations.runtimeOnly 
     into offlineCompile
 }
 
