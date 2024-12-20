@@ -35,8 +35,8 @@ jobs:
               docker push ${{ secrets.DOCKER_USERNAME }}/$service_name:latest
               docker push ${{ secrets.DOCKER_USERNAME }}/$service_name:${{ github.sha }}
             fi
-            docker build -t ${{ secrets.DOCKER_USERNAME }}/cartservice -f src/cartservice/src/Dockerfile src/cartservice/src/docker build -t currencyservice -f src/cartservice/src/Dockerfile src/cartservice/src/
-            docker tag ${{ secrets.DOCKER_USERNAME }}/cartservice:latest ${{ secrets.DOCKER_USERNAME }}/$service_name:${{ github.sha }}
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/cartservice -f ./src/cartservice/src/Dockerfile ./src/cartservice/src/
+            docker tag ${{ secrets.DOCKER_USERNAME }}/cartservice:latest ${{ secrets.DOCKER_USERNAME }}/cartservice:${{ github.sha }}
             docker push ${{ secrets.DOCKER_USERNAME }}/cartservice:latest
             docker push ${{ secrets.DOCKER_USERNAME }}/cartservice:${{ github.sha }}
           done
