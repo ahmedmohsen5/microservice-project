@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - test
-      
-  pull_request:
-
+env:
+    DEFAULT_VERSION: 1
 jobs:
   build-and-push:
     name: Build and Push Docker Image
@@ -21,7 +20,34 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-    
+      
+
+
+
+      - name: Read and Increment Version
+        id: version
+        run: |
+          # File to track the version number
+          VERSION_FILE=version.txt
+          
+          # Check if the version file exists
+          if [ -f "$VERSION_FILE" ]; then
+            VERSION=$(cat $VERSION_FILE)
+            NEW_VERSION=$((VERSION + 1))
+          else
+            # Start from 1 if the file doesn't exist
+            NEW_VERSION=1
+          fi
+          
+          # Save the new version back to the file
+          echo $NEW_VERSION > $VERSION_FILE
+          echo "New version: $NEW_VERSION"
+          
+          # Expose the version as an environment variable
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          
+          
+          
       - name: Build and Push Microservices
         run: |
           for service in ./src/*; do
